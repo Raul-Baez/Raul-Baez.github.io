@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<!--
+  Solid State by HTML5 UP
+  html5up.net | @ajlkn
+  Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Bucket Sort</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="icon" href="images/bucket.ico" type="image/ico">
+		<style>
+			.editor {
+				height: 300px;
+			}
+		</style>
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+
+	<body class="is-preload">
+		<div id="page-wrapper">
+			<header id="header">
+				<span>Algoritmo Bucket Sort</span>
+				<nav>
+					<a href="#menu">Menu</a>
+				</nav>
+			</header>
+
+			<!-- Menu -->
+			<nav id="menu">
+				<div class="inner">
+					<h2>Menu</h2>
+					<ul class="links">
+						<li><a href="index.html">¿Qué es?</a></li>
+						<li><a href="#informacion">Información</a></li>
+						<li><a href="#simulacion">Simulación y código</a></li>
+					</ul>
+					<a href="#" class="close">Close</a>
+				</div>
+			</nav>
+
+			<!-- Wrapper -->
+			<section id="wrapper">
+				<header>
+					<div class="inner">
+						<h2>¿Qué es?</h2>
+						<p>Bucket sort es un algoritmo de ordenamiento creado especialmente para ordenar datos uniformemente distribuidos.
+							Este es especialmente útil en algoritmos de estadística y análisis de datos.</p>
+						<p>Este es uno de los algoritmos de ordenamiento que tiene complejidad lineal. Utiliza memoria adicional para
+							operar. Requiere que el set de datos cumpla con la uniformidad de distribución.</p>
+						<p><a href="https://drive.google.com/file/d/1NbHQ1mY4MaiDdiH6xpmjXiPd9AhEizJC/view?usp=share_link">Descubrir más...</a></p>
+					</div>
+				</header>
+
+				<!-- Content -->
+				<div class="wrapper">
+					<div class="inner">
+						<section id="informacion">
+							<h3 class="major">Información</h3>
+							<p>
+								Bucket Sort es un algoritmo de ordenamiento que trabaja de una manera muy peculiar. Tiene 3 fases
+								principales de ordenamiento:
+							</p>
+							<ol>
+								<li>Clasificación</li>
+								<li>Ordenamiento</li>
+								<li>Concatenación</li>
+							</ol>
+							<p>
+								El punto clave de este algoritmo es la etapa de clasificación. En esta etapa se hace un previo-ordenamiento
+								de los datos al clasificarlos en contenedores diferentes (buckets) a la vez que son leídos por primera vez.
+								Cada bucket admite un rango específico de datos. Este rango idealmente es dependiente de la cantidad de datos,
+								número de buckets y la magnitud de los datos. Después solo se requiere ordenar los datos dentro de cada bucket
+								para finalmente obtener los datos ordenamos por medio de la concatenación de las buckets.
+							</p>
+							<p>
+								Es importante tener en cuenta que idealmente el conjunto de datos de entrada del algoritmo es un conjunto que
+								se encuentra distribuido de manera uniforme, es decir, los datos no se concentran en puntos específicos del rango,
+								sino que se encuentran distribuidos por todo el rango de manera más o menos equitativa. Esto ocurre ya que un set
+								de datos con una concentración de datos en [0.57-0.92] donde al menos uno de los datos es igual 0.13, hace que el rango
+								de los datos pase de ser 0.35 a ser 0.79 y esto puede incrementar el tiempo de ejecución.
+							</p>
+
+							<h4>Clasificación</h4>
+							<p>
+								Para clasificar los elementos en sus contenedores respectivos, primero debemos de determinar el rango de cada
+								bucket, y para ello es necesario conocer el número de buckets y los valores máximo y mínimo dentro del set de datos.
+								Podemos determinar dicho rango de la siguiente manera:
+							</p>
+							<pre><code>rango = (valorMáximo - valorMínimo) / númeroDeCubetas</code></pre>
+							<p>
+								Tal número de cubetas también depende del tamaño del arreglo, pero es más flexible. La cantidad de cubetas utilizadas
+								puede influir en el tiempo de ejecución del algoritmo. Mientras menos cubetas se utilicen, el algoritmo tiende a hacer
+								más lento, sin embargo, esto no significa que mientras más cubetas será más rápido, de hecho, una cantidad muy elevada
+								de cubetas puede llegar a ser innecesaria y poco óptima. El número óptimo de cubetas en un arreglo de tamaño cualquiera
+								puede ser determinado de la siguiente manera, aunque es importante considerar que este no será el número óptimo en la
+								totalidad de los casos:
+							</p>
+							<pre><code>númeroDeCubetas = sqrt(n) * (max - min) / (maxValue - minValue)</code></pre>
+							<p>
+								Donde:
+							</p>
+							<ul>
+								<li>n: La cantidad de datos.</li>
+								<li>max: El valor máximo encontrado entre los datos</li>
+								<li>min: El valor mínimo encontrado entre los datos</li>
+								<li>maxValue: El valor máximo permisible para los datos</li>
+								<li>minValue: El valor mínimo permisible para los datos</li>
+							</ul>
+							<p>
+								Una vez que contamos con lo anterior, podemos empezar a clasificar los datos, ya que sabemos que tenemos cierto número de
+								cubetas y que cada cubeta tendrá el mismo rango de valores podemos distribuir el rango global entre cada cubeta con el rango
+								local calculado. Supongamos el siguiente arreglo:
+							</p>
+							<pre><code>[0.27, 0.32, 0.53, 0.49, 0.22, 0.41, 0.38, 0.50, 0.24, 0.46]</code></pre>
+							<p>
+								De este arreglo identificamos que la cantidad de elementos es baja, por lo que nuestra elección en la cantidad de cubetas no
+								es muy significativa, por lo que podemos utilizar una cantidad igual a la mitad de la cantidad de elementos directamente. Además
+								identificamos que los valores máximo y mínimo son 0.52 y 0.22 respectivamente. Con esta información calculamos el rango local de
+								cada cubeta, esto teniendo en cuenta que el número de cubetas fué establecido de manera arbitraria como 5:
+							</p>
+							<pre><code>rango = (0.53 - 0.22) / 5 <br>rango = 0.062</code></pre>
+							<p>
+								De esta manera es como determinamos que la primer cubeta contiene valores en el intervalo cerrado-abierto [0.22-0.282), mientras
+								que la segunda contiene valores en el intervalo [0.282-0.344), ..., hasta llegar al intervalo cerrado [0.458, 0.53]. De esta manera
+								es que solo nos queda agregar los datos a las cubetas que les corresponden.
+							</p>
+							<pre><code>Rango cubeta 1 > [0.22-0.282)<br>Rango cubeta 2 > [0.282-0.344)<br>Rango cubeta 3 > [0.344-0.406)<br>Rango cubeta 4 > [0.406-0.468)<br>Rango cubeta 5 > [0.468-0.53]</code></pre>
+
+							<h4>Ordenamiento</h4>
+							<p>
+								Una vez que las cubetas contienen los elementos clasificados podemos aplicar cualquier algoritmo de ordenamiento, incluyendo el propio
+								Bucket Sort, para ordenar los datos dentro de cada cubeta. Es importante tener en cuenta que el algoritmo de ordenamiento seleccionado
+								puede influir en el tiempo de ejecución del algoritmo.
+							</p>
+							<p>
+								Siguiendo el ejemplo anterior, tendríamos las siguientes cubetas:
+							</p>
+							<pre><code>Cubeta 1 > [0.27, 0.22, 0.24]<br>Cubeta 2 > [0.32]<br>Cubeta 3 > [0.38]<br>Cubeta 4 > [0.41, 0.46]<br>Cubeta 5 > [0.53, 0.49, 0.50]</code></pre>
+							<p>
+								Se aplica ordenamiento interno:
+							</p>
+							<pre><code>Cubeta 1 > [0.22, 0.24, 0.27]<br>Cubeta 2 > [0.32]<br>Cubeta 3 > [0.38]<br>Cubeta 4 > [0.41, 0.46]<br>Cubeta 5 > [0.49, 0.50, 0.53]</code></pre>
+							<h4>Concatenación</h4>
+							<p>
+								Por último, debemos de copiar los contenidos de las cubetas al arreglo de salida, esto de manera ordenada, ya que si los contenidos de
+								las cubetas están ordenados a la vez que las cubetas están ordenadas, entonces finalmente podemos conseguir el arreglo ordenado.
+							</p>
+							<pre><code>[0.22, 0.24, 0.27, 0.32, 0.38, 0.41, 0.46, 0.49, 0.50, 0.53]</code></pre>
+						</section>
+
+						<section id="simulacion">
+							<h3 class="major">Simulación y código</h3>
+							<p>
+								Puedes consultar el código completo y experimentar con la simulación haciendo
+								<a href="https://replit.com/@RaulBaez/BucketSortDynamic?v=1">click aquí.</a>
+							</p>
+						</section>
+					</div>
+				</div>
+			</section>
+
+			<!-- Footer -->
+			<section id="footer">
+				<div class="inner">
+					<h2 class="major">Elaborado</h2>
+					<p>
+						Universidad Autónoma de Baja California - Facultad de Ciencias Químicas e Ingeniería <br>
+						Baez Guzmán Raúl [1272536] a 30/Mayo/2023 <br>
+						Algoritmos y estructuras de datos
+					</p>
+				</div>
+			</section>
+
+		</div>
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+	</body>
+</html>
